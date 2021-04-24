@@ -3,6 +3,7 @@
 # PROBLEMS #
 
 ############
+library(UsingR)
 
 # 2.1 Enter the following data into a variable p using c
 # 2 3 5 7 11 13 17 19
@@ -56,8 +57,6 @@ rep(1:3, times=3:1)
 # using :, seq, or rep as appropriate.
 
 
-
-
 # 2.5 Store the following data sets into a variable any way you can:
 # 1. 2, 3, 5, 7, 11, 13, 17, 19
 
@@ -76,14 +75,14 @@ rep(1:3, times=3:1)
 # 7. 0, 25, 50, 75, 100, . . . , 975, 1000 (0 to 1000 by 25s)
 # Use c only when : or seq will not work.
 
-rep(seq(1, 5)
-
-
 
 # 2.6 The average distance from the center is computed by (jx1 􀀀 ¯ xj +    +
 #                                                            jxn 􀀀 ¯ xj)/n, where ¯ x is the mean of the data vector. Compute this for the
 # rivers data set using the function sum to add the values and abs to find the
 # absolute value.
+
+avg_dist <- abs(rivers - mean(rivers))
+avg_dist
 
 
 # 2.7 Precedence rules are used to decide the order of evaluating operations
@@ -94,8 +93,15 @@ rep(seq(1, 5)
 # cities in the United States. It is stored as a data vector with names. Find the
 # average amounts for the cities starting with a “J”.
 
+precip[startsWith(names(precip), "J")]
+
+
 # 2.9 An experiment had 10 different trials. Create a character vector with 10
 # different names for the trials, e.g., "Trial 1", . . . .
+
+paste("Trial", 1:10, sep="")
+
+
 
 # 2.10 Working with file names in R is easy, but requires the proper use of
 # file separators, which vary depending on the operating system. For example,
@@ -107,27 +113,52 @@ f <- system.file("DESCRIPTION", package="UsingR")
 dname <- dirname(f)
 fname <- basename(f)
 
-
 # To combine dname and fname into a full pathname use paste with the sep
 # argument being .Platform$file.sep. What is the result?
+
+paste(dname, fname, sep = .Platform$file.sep)
 
 # 2.11 The Manufacturer variable in the Cars93 (MASS) data set is stored as a
 # factor. How many levels are there? How many different cases are there?
   
-  
+str(Cars93$Manufacturer)  # factor w/32 levels
+
+levels(Cars93$Manufacturer)
   
 #   2.12 The Cylinders variable in the Cars93 (MASS) data set records the number
 # of cylinders in the respective car. Why can this not be stored as a numeric
 # value? Which cars have 5 cylinders?
+
+# because the number of cylinders represent discrete categories
+
+str(Cars93$Cylinders)
+
+indices <- which(Cars93$Cylinders == "5")
+
+Cars93[Cars93$Cylinders == "5", ][c("Manufacturer")]
+
 
 #   2.13 The mtcars data set records information about cars from 1972. The values
 # are coded using numbers. Recoding as factors can be more informative
 # for the user. Recode the am variable, with 0 being “automatic” and 1 being
 # “manual.”
 
+mtcars$am[mtcars$am == 0] <- "automatic"
+mtcars$am[mtcars$am == 1] <- "manual"
+
+mtcars$am <- factor(mtcars$am)
+
+str(mtcars)
+summary(mtcars$am)
+
+str(mtcars$am)
+
+
 # 2.14 The Arbuthnot (HistData) data set contains information on the number
 # of Male and Female births in London from 1629 to 1710. Using and and > determine
 # if there was ever a year with more female births.
+
+Arbuthnot$Males < Arbuthnot$Females # False
 
 # 2.15 The negation operator ! is used to reverse Boolean values. For example:
 #   A <- c(TRUE, FALSE, TRUE, TRUE)
@@ -139,11 +170,17 @@ fname <- basename(f)
 # 2.16 In the precip data set, find all the cities with an average annual rainfall
 # exceeding 50 inches.
 
-
+precip[precip > 50]
 
 # 2.17 For the precip data set, we can find the mean and the 25%-trimmed
 # mean with mean(precip) and mean(precip, trim=0.25). Are any values in
 # the data set more than 1.5 times the trimmed mean above the mean?
+
+mean(precip)
+trimmed_mean <- mean(precip, trim = 0.25)
+
+precip[precip > 1.5 * trimmed_mean]
+
 
 #   2.18 Consider the following “inequalities.” Can you determine how the comparisons
 # are being done?
@@ -165,9 +202,20 @@ fname <- basename(f)
 # How many times was your commute 20 minutes or more? What percent
 # of your commutes are less than 18 minutes long?
 
+commute <- c(17, 16, 20, 24, 22, 15, 21, 15, 17, 22)
 
+mean(commute)
+max(commute)
+min(commute)
 
+commute[commute == 24] <- 18
+commute
 
+mean(commute)
+max(commute)
+min(commute)
+
+length(commute[commute < 18]) / length(commute) # 50%
 
 
 #   2.20 Suppose monthly sales (in 10,000s) of CDs in 2013 were
@@ -177,6 +225,14 @@ fname <- basename(f)
 #   one containing the months with 31 days, the other the remaining months.
 # Compare the means of these two data vectors.
 
+cd <- c(JAN=79, FEB=74, MAR=161, APR=127, MAY=133, JUN=210, JUL=99, AGO=143, 
+        SEP=249, OUT=249, NOV=368, DEZ=302)
+
+month_31 <- c(JAN=79, MAR=161, MAY=133, JUL=99, AGO=143, OUT=249, DEZ=302)
+months <- c(FEB=74,APR=127,JUN=210,SEP=249,NOV=368)
+
+mean(month_31)
+mean(months)
 
 # 2.21 The following data records the average salary in major league baseball
 # for the years 1990–1999 (in millions):
@@ -187,3 +243,23 @@ fname <- basename(f)
 # times 100. This can be found by dividing the output of diff by the first nine
 # numbers (but not all ten). After doing this, determine which year has the
 # biggest percentage increase.
+
+avg_salary <- c(0.57,0.89, 1.08, 1.12, 1.18 ,1.07, 1.17, 1.38, 1.44, 1.72)
+
+diff_salary <- diff(avg_salary)
+diff_salary
+
+# percetage difference
+
+pct_diff <- diff_salary / avg_salary[-10]
+pct_diff
+
+# highest percentage increase
+max(pct_diff) # 56% - 1991
+
+
+
+
+
+
+
