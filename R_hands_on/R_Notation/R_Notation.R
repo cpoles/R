@@ -31,9 +31,47 @@ deck[-(2:52), 1:3] # only the first row
 deck[1,]
 
 # Name indexing
+deck[1, c("face", "value")] # row 1 - columns face and value
 
+deck[ , "value"] # column value only
 
+# Ex. Deal a Card
+deal <- function(cards) {
+  cards[1, ]
+}
 
+deal(deck)
 
+# Shuffle the dataset
+random <- sample(1:52, size = 52) # random sample of row numbers
+random
+
+deck4 <- deck[random, ]
+deck4
+
+shuffle <- function(cards) {
+  random <- sample(1:52, size = 52)
+  cards[random, ]
+}
+
+shuffle(deck)
+
+# Dollar Signs and Double Brackets
+deck$value
+
+mean(deck$value)
+
+lst <- list(numbers = c(1,2), logical = TRUE, strings = c("a", "b","c"))
+lst
+
+typeof(lst[1])
+
+class(lst$numbers)
+
+## double brackets
+lst[[1]] == lst$numbers
+
+lst["numbers"]
+lst[["numbers"]]
 
 
