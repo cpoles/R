@@ -1,0 +1,21 @@
+{
+  "blurb": "Tally the results of a small football competition.",
+  "authors": [
+    "jonmcalder"
+  ],
+  "contributors": [
+    "katrinleinweber",
+    "zacchaeusluke"
+  ],
+  "files": {
+    "solution": [
+      "tournament.R"
+    ],
+    "test": [
+      "test_tournament.R"
+    ],
+    "example": [
+      ".meta/example.R"
+    ]
+  }
+}
